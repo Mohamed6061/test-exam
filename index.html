@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تطبيق الاختبار</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            height: 93vh;
+            background-image: url(https://th.bing.com/th/id/R.6a11584…?rik=3ouXfKQLLts6tg&riu=http%3a%2f%2fwww.leadernetworks.com%2fwp-content%2fuploads%2f2017%2f04%2fquiz-background-slider.png&ehk=qAk%2fImcIw2xDaqeGron1zPSacLdCgFGrgA1xphSgy8Y%3d&risl=&pid=ImgRaw&r=0);
+            background-size: contain;
+        }
+        .n {
+            background: #eeeeeeb8;
+            padding: 24px;
+            box-shadow: 8px 6px 14px 0px black;
+            border-radius: 19px;
+            width: 85%;
+        }
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .correct {
+            background-color: green;
+            color: white;
+        }
+
+        .incorrect {
+            background-color: red;
+            color: white;
+        }
+
+        .option-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: -3px -4px 0px 0 #4c4c4c;
+        }
+
+        #end-of-page {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-weight: bolder;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container n mt-5">
+        <h2 class="text-center">Electrical Test 3 Exam 2022/2023 Final</h2>
+        <div class="progress mt-4">
+            <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0"
+                aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div id="quiz-container" class="mt-4">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        <div id="score-container" class="text-center mt-4"></div>
+        <hr>
+        <div id="end-of-page" class="mt-4">
+            <p>Developed by Mohamed Abdel Fatah</p>
+            <p><a href="https://github.com/Mohamed6061">Githup</a></p>
+            <p><a href="https://www.linkedin.com/in/mohamed-abdel-fatah-0369b6221">LinkedIn</a></p>
+        </div>
+    </div>
+
+    <audio id="correct-sound" src="correct.mp3"></audio>
+    <audio id="incorrect-sound" src="incorrect.mp3"></audio>
+
+    <script>
+      const questions = [
+      {
+        question: "Synchronous motors are self-starting.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "The synchronous motor always runs at less than synchronous speed.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "In the synchronous motor, the speed regulation is always zero.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "In the synchronous motor, the percentage slip is 0.25%.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "The direct current machine can be used as a motor or as a generator.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "The number of slip rings on a squirrel cage induction motor is usually two.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "While the input to the induction motor is mechanical power, its output is electrical power.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "The difference between motor speed and synchronous speed in transformer is called slip.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "In the synchronous motor, the operating speed can be changed by changing the load.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "An 8-pole, 3-phase, 50 Hz induction motor is operating at a speed of 720 rpm. The frequency of the rotor current of the motor in Hz is two.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "The loss that varies with load in the synchronous motor is core loss.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "Drop in alternator frequency is resolved by raising speed of prime mover.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "With the increase in speed of alternator increases, the frequency increases.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "In the synchronous motor, the rotor copper loss is met by A.C. source.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "In the synchronous motor, the speed regulation is always zero.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "Power is measured in a three-phase load by using an ammeter.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "A simple three-phase generator consists of three conductive loops separated by 120°.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "A balanced load is one in which all the impedances are equal.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "The term squirrel-cage applies to a type of three-phase ac generator.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "A simple two-phase generator consists of two conductive loops separated by 90°, rotating in a magnetic field.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "An alternator is an electromechanical ac generator.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "The stator is the rotating assembly in a generator or motor.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "The power output of an induction motor will be minimum when the slip is zero.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "For induction motors, normally the stator winding is connected to supply and the rotor winding is open circuited.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "Synchronizing power of a synchronous machine is directly proportional to the synchronous reactance.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "The synchronous speed of an induction motor is defined as the natural speed at which a magnetic field rotates.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "In an induction motor, rotor slots are usually not quite parallel to the shaft but are given a slight skew to increase the speed of the motor.",
+        options: ["True", "False"],
+        answer: 1
+    },
+    {
+        question: "The starting torque of an induction motor is a maximum when rotor resistance equals rotor reactance.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "Insertion of resistance in the rotor circuit of an induction motor to develop a given torque causes almost no change its rotor current.",
+        options: ["True", "False"],
+        answer: 0
+    },
+    {
+        question: "A slip ring induction motor is preferred to squirrel cage induction motor when high starting torque is desired.",
+        options: ["True", "False"],
+        answer: 0
+    } ,
+      {
+          question: "At zero in an induction motor:",
+          options: [
+              "(A) Motor runs as a generator",
+              "(B) Motor does not run",
+              "(C) The motor runs at synchronous speed",
+              "(D) Slip produced is zero"
+          ],
+          answer: 1
+      },
+      {
+          question: "The synchronous speed of an induction motor is defined as:",
+          options: [
+              "(A) Natural speed at which a magnetic field rotates",
+              "(B) The speed of an induction motor at no load",
+              "(C) The speed of a synchronous motor",
+              "(D) None of the above"
+          ],
+          answer: 0
+      },
+      {
+          question: "Motor commonly used for traction purpose is:",
+          options: [
+              "(A) Induction motor",
+              "(B) DC series motor",
+              "(C) AC motor",
+              "(D) Synchronous motor"
+          ],
+          answer: 1
+      },
+      {
+          question: "If a single-phase motor runs slow, it may be due to:",
+          options: [
+              "(A) Overload",
+              "(B) Low frequency",
+              "(C) Low voltage",
+              "(D) Any of them"
+          ],
+          answer: 3
+      },
+      {
+          question: "In induction motor the unit of slip is:",
+          options: [
+              "(A) rpm",
+              "(B) metre per second",
+              "(C) radian",
+              "(D) unitless"
+          ],
+          answer: 3
+      },
+      {
+          question: "When the supply frequency of a three-phase induction motor is increased, then its synchronous speed:",
+          options: [
+              "(A) Decreases",
+              "(B) Increases",
+              "(C) Remains same",
+              "(D) None of the above"
+          ],
+          answer: 1
+      },
+      {
+          question: "A 4 pole, 3-phase, 50 Hz induction motor runs at a speed of 1470 r.p.m. The frequency of the induced e.m.f. in the rotor under this condition is:",
+          options: [
+              "(A) 1 Hz",
+              "(B) 2 Hz",
+              "(C) 5 Hz",
+              "(D) 6 Hz"
+          ],
+          answer: 1
+      },
+      {
+          question: "When rotor of 3-phase induction motor is blocked, value of slip will be:",
+          options: [
+              "(A) Zero",
+              "(B) 0.1",
+              "(C) 0.5",
+              "(D) Unity"
+          ],
+          answer: 3
+      },
+      {
+          question: "Three-phase slip ring induction motor is also known as:",
+          options: [
+              "(A) Controlled motor",
+              "(B) Wound rotor motor",
+              "(C) Synchronous motor",
+              "(D) Series motor"
+          ],
+          answer: 1
+      },
+      {
+          question: "When the rotor of 3-phase induction motor runs at synchronous speed, its rotor frequency will become:",
+          options: [
+              "(A) Zero",
+              "(B) Equal to supply frequency",
+              "(C) Half of supply frequency",
+              "(D) Very high"
+          ],
+          answer: 0
+      },
+      {
+          question: "A 50 Hz, 3-phase induction motor has a synchronous speed of 1500 r.p.m. The number of poles in the motor is:",
+          options: [
+              "(A) 2 poles",
+              "(B) 4 poles",
+              "(C) 6 poles",
+              "(D) 8 poles"
+          ],
+          answer: 1
+      },
+      {
+          question: "Product of torque and mechanical angular velocity is:",
+          options: [
+              "(A) Ea/ω",
+              "(B) Ea*Ia",
+              "(C) ω/Ea",
+              "(D) Can't tell"
+          ],
+          answer: 1
+      },
+      {
+          question: "When Ea < Vt, machine is said to be operating in which of the following modes?",
+          options: [
+              "(A) Depends on the shaft speed",
+              "(B) Generating",
+              "(C) Motoring",
+              "(D) Inducing"
+          ],
+          answer: 2
+      },
+      {
+          question: "Simple equation of DC machine operating in motoring mode, with non-zero Ra value is:",
+          options: [
+              "(A) Vt = Ea - Ia/Ra",
+              "(B) Vt = Ea + Ia*Ra",
+              "(C) Vt = Ea - Ia*Ra",
+              "(D) Vt = Ea + Ia/Ra"
+          ],
+          answer: 1
+      },
+      {
+          question: "Simple equation of DC machine operating in generating mode, with non-zero Ra value is:",
+          options: [
+              "(A) Vt = Ea - Ia/Ra",
+              "(B) Vt = Ea + Ia*Ra",
+              "(C) Vt = Ea - Ia*Ra",
+              "(D) Vt = Ea + Ia/Ra"
+          ],
+          answer: 3
+      } , 
+      {
+          question: "When Ea > Vt, machine is said to be operating in which of the following modes?",
+          options: [
+              "(A) Depends on the shaft speed",
+              "(B) Generating",
+              "(C) Motoring",
+              "(D) Inducing"
+          ],
+          answer: 1
+      },
+      {
+          question: "For a DC generator feeding 100 kW power into 230 V mains, having armature resistance and field resistance equal to 0.08 Ω and 115 Ω respectively. The value of armature current is:",
+          options: [
+              "(A) 436.8 A",
+              "(B) 434.8 A",
+              "(C) 432.8 A",
+              "(D) Data insufficient"
+          ],
+          answer: 0
+      },
+      {
+          question: "As compared to three-phase induction motor, the advantage of synchronous motor in addition to its constant speed is:",
+          options: [
+              "(A) Higher power factor",
+              "(B) Better efficiency",
+              "(C) Both A & B",
+              "(D) None of the above"
+          ],
+          answer: 2
+      },
+      {
+          question: "What will happen if the relative speed between the rotating flux of stator and rotor of the induction motor is zero?",
+          options: [
+              "(A) The slip of the motor will be 5%",
+              "(B) The rotor will not run",
+              "(C) The rotor will run at very high speed",
+              "(D) The torque produced will be very large"
+          ],
+          answer: 1
+      },
+      {
+          question: "When will the synchronous motor stop?",
+          options: [
+              "(A) Supply voltage fluctuates",
+              "(B) Load on motor varies",
+              "(C) When the excitation winding gets disconnected",
+              "(D) Supply voltage frequency changes"
+          ],
+          answer: 2
+      },
+      {
+          question: "In which motors do the stator and rotor magnetic field rotate at equal speed?",
+          options: [
+              "(A) Universal motor",
+              "(B) Synchronous motor",
+              "(C) Induction motor",
+              "(D) Reluctance motor"
+          ],
+          answer: 1
+      },
+      {
+          question: "In synchronous motors, the standard full-load power ratings are:",
+          options: [
+              "(A) Zero or 0.8 leading",
+              "(B) Unity or 0.8 lagging",
+              "(C) Unity or 0.8 leading",
+              "(D) Unity or zero"
+          ],
+          answer: 2
+      },
+      {
+          question: "The synchronous motor running with normal excitation adjusts to load raises usually by an increase in:",
+          options: [
+              "(A) Back e.m.f.",
+              "(B) Armature current",
+              "(C) Power factor",
+              "(D) Torque angle"
+          ],
+          answer: 1
+      },
+      {
+          question: "In the synchronous motor, the shaft is made up of:",
+          options: [
+              "(A) Mild steel",
+              "(B) Chrome steel",
+              "(C) Alnico",
+              "(D) Stainless steel"
+          ],
+          answer: 0
+      },
+      {
+          question: "In the synchronous motor, if the field is under-excited, the power factor will be:",
+          options: [
+              "(A) Leading",
+              "(B) Lagging",
+              "(C) Unity",
+              "(D) Zero"
+          ],
+          answer: 1
+      },
+      {
+          question: "The synchronous motor has a better power factor than an induction motor. This is mainly because:",
+          options: [
+              "(A) No-slip in the synchronous motor",
+              "(B) The stator supply is not necessary to produce a magnetic field",
+              "(C) The mechanical load remains constant on the rotor",
+              "(D) The large air gap in the synchronous motor"
+          ],
+          answer: 1
+      },
+      {
+          question: "The over-excited synchronous motor can be used for:",
+          options: [
+              "(A) Fluctuating loads",
+              "(B) Variable speed loads",
+              "(C) Low torque loads",
+              "(D) Power factor corrections"
+          ],
+          answer: 3
+      },
+      {
+          question: "The efficiency of the properly designed synchronous motor is usually:",
+          options: [
+              "(A) 60 to 70%",
+              "(B) 75 to 80%",
+              "(C) 85 to 95%",
+              "(D) 99 to 99.5%"
+          ],
+          answer: 2
+      },
+      {
+          question: "To limit the operating temperature in the electrical machine, the machine should have proper:",
+          options: [
+              "(A) Voltage rating",
+              "(B) Current rating",
+              "(C) Power factor",
+              "(D) Speed"
+          ],
+          answer: 1
+      },
+      {
+          question: "Why are synchronous motors not self-starting?",
+          options: [
+              "(A) The rotation of direction is not fixed",
+              "(B) At the half cycle, the direction of instantaneous torque reverses",
+              "(C) On these machines, the starter cannot be used",
+              "(D) On these machines, starting winding is not provided"
+          ],
+          answer: 1
+      }, 
+      {
+          question: "In the three-phase synchronous motor, if one phase has short-circuited, the motor will:",
+          options: [
+              "(A) Not start",
+              "(B) Run at 2/3 of synchronous speed",
+              "(C) Run with excessive vibrations",
+              "(D) Take less than the rated load"
+          ],
+          answer: 0
+      },
+      {
+          question: "In the synchronous motor, the power developed will be maximum when the load angle is:",
+          options: [
+              "(A) Zero",
+              "(B) 45°",
+              "(C) 90°",
+              "(D) 120°"
+          ],
+          answer: 2
+      },
+      {
+          question: "The synchronous motor can be used as a synchronous condenser to improve the power factor when it is:",
+          options: [
+              "(A) Under-loaded",
+              "(B) Over-loaded",
+              "(C) Under-excited",
+              "(D) Over-excited"
+          ],
+          answer: 3
+      },
+      {
+          question: "The magnitude of stator back e.m.f. in a synchronous motor depends on:",
+          options: [
+              "(A) D.C. excitation only",
+              "(B) Speed of the motor",
+              "(C) Load on the motor",
+              "(D) Both the speed and rotor flux"
+          ],
+          answer: 0
+      },
+      {
+          question: "For the V-curves of the synchronous motor, the graph is drawn between:",
+          options: [
+              "(A) Field current and armature current",
+              "(B) Terminal voltage and load factor",
+              "(C) Power factor and field current",
+              "(D) Armature current and power factor"
+          ],
+          answer: 0
+      },
+      {
+          question: "A three-phase 440 V, 50 Hz induction motor has a speed of 950 rpm. If the machine has 6 poles, the percentage slip would be:",
+          options: [
+              "(A) 0.5%",
+              "(B) 1%",
+              "(C) 5%",
+              "(D) 10%"
+          ],
+          answer: 2
+      },
+      {
+          question: "For an induction motor, the power factor on short circuit can be determined by:",
+          options: [
+              "(A) Blocked rotor test",
+              "(B) No load test",
+              "(C) Open circuit test",
+              "(D) Any of the above"
+          ],
+          answer: 0
+      },
+      {
+          question: "An induction motor works with:",
+          options: [
+              "(A) DC only",
+              "(B) AC only",
+              "(C) Both AC and DC",
+              "(D) None of them"
+          ],
+          answer: 1
+      },
+      {
+          question: "In an induction motor, if P is the power delivered to a rotor and s is the slip, then the power lost in the rotor as copper loss will be:",
+          options: [
+              "(A) P/s",
+              "(B) sP",
+              "(C) P/s²",
+              "(D) s²P"
+          ],
+          answer: 1
+      },
+      {
+          question: "Wattmeter reading in no-load test of induction motor gives:",
+          options: [
+              "(A) Copper losses in the stator",
+              "(B) Friction and winding losses",
+              "(C) Sum of (A) and (B) above",
+              "(D) Total losses in the rotor on no load"
+          ],
+          answer: 3
+      },
+      {
+          question: "A 3-phase, 50 Hz induction motor has a full load speed of 1440 rpm. For this motor, the speed of stator field with respect to revolving rotor structure will be:",
+          options: [
+              "(A) 60 rpm",
+              "(B) 1440 rpm",
+              "(C) 1500 rpm",
+              "(D) 1560 rpm"
+          ],
+          answer: 0
+      },
+      {
+          question: "If a three-phase squirrel cage induction motor runs slow, which of the following could not be the reason?",
+          options: [
+              "(A) High frequency",
+              "(B) Low voltage",
+              "(C) Shorted stator coils",
+              "(D) Overload"
+          ],
+          answer: 1
+      },
+      {
+          question: "In the case of slip ring induction motors, the starting torque can be increased by:",
+          options: [
+              "(A) Adding external resistance and inductance to the rotor",
+              "(B) Adding external resistance to the rotor",
+              "(C) Adding external inductance to the rotor",
+              "(D) Adding external capacitance to the motor"
+          ],
+          answer: 1
+      },
+      {
+          question: "Full load current of a 1 HP single-phase motor will be about:",
+          options: [
+              "(A) 0.5 A",
+              "(B) 2 A",
+              "(C) 5 A",
+              "(D) 10 A"
+          ],
+          answer: 2
+      },
+      {
+          question: "When the supply voltage to an induction motor is reduced by 10%, the maximum torque will decrease by approximately:",
+          options: [
+              "(A) 5%",
+              "(B) 10%",
+              "(C) 20%",
+              "(D) 40%"
+          ],
+          answer: 2
+      },
+      {
+          question: "What is the ratio of rotor copper loss to rotor output if the slip is 8%?",
+          options: [
+              "(A) 1:8",
+              "(B) 1:10",
+              "(C) 2:19",
+              "(D) 4:91"
+          ],
+          answer: 1
+      },
+      {
+          question: "Which one of the following tests can be used to determine the transformer ratio of an induction motor?",
+          options: [
+              "(A) Slip test",
+              "(B) Stator resistance test",
+              "(C) Short circuit test",
+              "(D) Open circuit test"
+          ],
+          answer: 2
+      },
+      {
+          question: "A 3-phase delta-connected induction motor is continued to run under single phasing. It is likely to result in:",
+          options: [
+              "(A) Burning of rotor",
+              "(B) Burning of three phase windings",
+              "(C) Burning of two phase windings",
+              "(D) Burning of one phase winding"
+          ],
+          answer: 1
+      },
+      {
+          question: "Two of the power supply terminals to a 3-phase induction motor are inter-changed during the maintenance. The motor will:",
+          options: [
+              "(A) Get burnt when switched on",
+              "(B) Not start",
+              "(C) Continue to work normally but in the reverse direction",
+              "(D) Continue to work normally in the same direction as earlier"
+          ],
+          answer: 2
+      }, 
+      {
+          question: "If an induction machine is run at above synchronous speed, it acts as:",
+          options: [
+              "(A) a synchronous motor",
+              "(B) an induction generator",
+              "(C) an induction motor",
+              "(D) none of the above"
+          ],
+          answer: 1
+      },
+      {
+          question: "The rotor of a 3-phase induction motor rotates in the same direction as the stator rotating field. This can be explained by:",
+          options: [
+              "(A) Lenz's law",
+              "(B) Newton's law",
+              "(C) Faraday's law of electromagnetic induction",
+              "(D) Fleming's right-hand rule"
+          ],
+          answer: 0
+      },
+      {
+          question: "A 60 HP, 440 V, 50 Hz, 3-phase, 6-pole induction motor runs at 960 rpm at full load. The slip 's' and frequency of the rotor 'f' are:",
+          options: [
+              "(A) s = 2.5%, f = 1.25 Hz",
+              "(B) s = 4.0%, f = 2.0 Hz",
+              "(C) s = 4.0%, f = 2.5 Hz",
+              "(D) s = 4.0%, f = 20 Hz"
+          ],
+          answer: 1
+      },
+      {
+          question: "In the circuit diagram for a 3-phase induction motor, the diameter of the circuit is determined by:",
+          options: [
+              "(A) Total stator current",
+              "(B) Exciting current",
+              "(C) Rotor current",
+              "(D) Rotor current referred to stator"
+          ],
+          answer: 2
+      },
+      {
+          question: "For a squirrel cage induction motor running on no load:",
+          options: [
+              "(A) Rotor induced emf is very small",
+              "(B) Slip is very large",
+              "(C) Rotor current is large",
+              "(D) Power factor is large"
+          ],
+          answer: 2
+      },
+      {
+          question: "''Cogging'' in induction motor occurs when:",
+          options: [
+              "(A) Number of stator teeth - number of rotor teeth = odd number",
+              "(B) Number of stator teeth - number of rotor teeth = even number",
+              "(C) Number of stator teeth - number of rotor teeth = negative number",
+              "(D) Number of stator teeth - number of rotor teeth = 0"
+          ],
+          answer: 3
+      },
+      {
+          question: "Which of the following methods of speed control is not affected through stator side?",
+          options: [
+              "(A) Change of number of poles",
+              "(B) Change of supply voltage frequency",
+              "(C) Change of rotor resistance",
+              "(D) Change of supply voltage"
+          ],
+          answer: 2
+      },
+      {
+          question: "Which statement about the squirrel cage induction motor is incorrect?",
+          options: [
+              "(A) It can operate on lagging as well as leading power factor",
+              "(B) It has no commutator",
+              "(C) It has no slip rings",
+              "(D) Slip increases as the load on the motor increases"
+          ],
+          answer: 0
+      },
+      {
+          question: "When resistance is added in the rotor circuit of a slip ring induction motor:",
+          options: [
+              "(A) The starting torque and current both reduce",
+              "(B) The starting torque and current both increase",
+              "(C) The starting current reduces but starting torque increases",
+              "(D) None of the above"
+          ],
+          answer: 2
+      },
+      {
+          question: "In a three-phase induction motor, iron losses mainly occur in:",
+          options: [
+              "(A) Stator winding",
+              "(B) Stator core and stator teeth",
+              "(C) Rotor core and rotor teeth",
+              "(D) Stator and rotor"
+          ],
+          answer: 1
+      },
+      {
+          question: "A 3-phase, 440 V, 50 Hz induction motor has 4% slip. The frequency of rotor e.m.f. will be:",
+          options: [
+              "(A) 200 Hz",
+              "(B) 50 Hz",
+              "(C) 2 Hz",
+              "(D) 0.2 Hz"
+          ],
+          answer: 2
+      },
+      {
+          question: "The number of slip rings on a squirrel cage induction motor is usually:",
+          options: [
+              "(A) Two",
+              "(B) Three",
+              "(C) Four",
+              "(D) None"
+          ],
+          answer: 3
+      },
+      {
+          question: "The crawling in the induction motor is caused by:",
+          options: [
+              "(A) Low voltage supply",
+              "(B) High loads",
+              "(C) Harmonics developed in the motor",
+              "(D) Improper design of the machine"
+          ],
+          answer: 2
+      },
+      {
+          question: "It is advisable to avoid line-starting of induction motor and use a starter because:",
+          options: [
+              "(A) Motor takes five to seven times its full load current",
+              "(B) It will pick up very high speed and may go out of step",
+              "(C) It will run in reverse direction",
+              "(D) Starting torque is very high"
+          ],
+          answer: 0
+      },
+      {
+          question: "What is the frequency of rotor current of a 50 Hz induction motor operating at 2% slip?",
+          options: [
+              "(A) 1 Hz",
+              "(B) 100 Hz",
+              "(C) 2 Hz",
+              "(D) 50 Hz"
+          ],
+          answer: 0
+      },
+      {
+          question: "In a 3-phase induction motor, reactance under running condition is less than at standstill value. This is due to reduction in:",
+          options: [
+              "(A) Rotor inductance",
+              "(B) Stator magnetic flux",
+              "(C) Frequency of rotor emf",
+              "(D) Mutual flux linking the stator and rotor"
+          ],
+          answer: 2
+      },
+      {
+          question: "For achieving high starting torque and high operating efficiency, an induction motor should have ____ rotor circuit resistance at starting and ____ circuit resistance under operating conditions:",
+          options: [
+              "(A) High, Low",
+              "(B) Low, High",
+              "(C) High, High",
+              "(D) Low, Low"
+          ],
+          answer: 0
+      },
+      {
+          question: "In a 3-phase slip ring induction motor, high starting torque is achieved by:",
+          options: [
+              "(A) Increasing supply voltage V",
+              "(B) Increasing supply frequency f",
+              "(C) Connecting a capacitor across the motor terminals",
+              "(D) Connecting star connected resistance across the slip ring terminals of the motor"
+          ],
+          answer: 3
+      }, 
+      {
+          question: "The frame of an induction motor is made of:",
+          options: [
+              "(A) Aluminum",
+              "(B) Silicon steel",
+              "(C) Cast iron",
+              "(D) Stainless steel"
+          ],
+          answer: 2
+      },
+      {
+          question: "When an induction motor runs at rated load and speed, the iron losses are:",
+          options: [
+              "(A) Negligible",
+              "(B) Very heavy",
+              "(C) Independent of supply frequency",
+              "(D) Independent of supply voltage"
+          ],
+          answer: 0
+      },
+      {
+          question: "Various methods for starting a 3-phase induction motor are given. Which method will require six stator terminals?",
+          options: [
+              "(A) DOL",
+              "(B) Auto transformer",
+              "(C) Rheostat",
+              "(D) Star-delta"
+          ],
+          answer: 3
+      }
+      
+  ];
+  
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function showQuestion(index) {
+            const quizContainer = document.getElementById("quiz-container");
+            quizContainer.innerHTML = `
+                  <div class="question-container l active">
+                    <h5>Quesitoin ${index + 1} From ${questions.length}</h5>
+                    <h4 style="color:red">${questions[index].question}</h4>
+                    <div id="options-container" style="color:blue" class="d-flex flex-wrap"></div>
+                  </div>
+                `;
+
+
+            const optionsContainer = document.getElementById("options-container");
+            questions[index].options.forEach((option, i) => {
+                optionsContainer.innerHTML += `
+                    <div class="option-box" onclick="checkAnswer(${i})">${option}</div>
+                  `;
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            const answer = questions[currentQuestionIndex].answer;
+
+            questions[currentQuestionIndex].selectedIndex = selectedIndex;
+
+            if (selectedIndex === answer) {
+                score++;
+                document
+                    .querySelectorAll(".option-box")
+                    [answer].classList.add("correct");
+                document.getElementById("correct-sound").play();
+            } else {
+                document
+                    .querySelectorAll(".option-box")
+                    [selectedIndex].classList.add("incorrect");
+                document
+                    .querySelectorAll(".option-box")
+                    [answer].classList.add("correct");
+                document.getElementById("incorrect-sound").play();
+            }
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion(currentQuestionIndex);
+                    updateProgressBar();
+                } else {
+                    showScore();
+                    showSolutions();
+                }
+            }, 2000);
+        }
+
+        function showScore() {
+            const quizContainer = document.getElementById("quiz-container");
+            const scoreContainer = document.getElementById("score-container");
+            quizContainer.innerHTML = "";
+            scoreContainer.innerHTML = `<h3>Your result ${score} from ${questions.length}</h3>`;
+        }
+
+        function showSolutions() {
+            const quizContainer = document.getElementById("quiz-container");
+            const solutionsContainer = document.createElement("div");
+            solutionsContainer.classList.add("question-solution-container");
+            quizContainer.appendChild(solutionsContainer);
+
+            questions.forEach((question, index) => {
+                const solutionDiv = document.createElement("div");
+                solutionDiv.innerHTML = `
+                    <h4 style="color: red">${index + 1}. ${question.question}</h4>
+                    ${question.selectedIndex !== undefined ? `<p><strong>Your Choice:</strong> ${question.options[question.selectedIndex]}</p>` : ''}
+                    <p><strong>Correct Answer:</strong> ${question.options[question.answer]}</p>
+                    `;
+                    solutionsContainer.appendChild(solutionDiv);
+                });
+            }
+
+            function updateProgressBar() {
+                const progressBar = document.getElementById("progress-bar");
+                const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute("aria-valuenow", progress);
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                showQuestion(currentQuestionIndex);
+                updateProgressBar();
+            });
+        </script>
+    </body>
+</html>
+
+    
